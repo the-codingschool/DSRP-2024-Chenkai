@@ -1,0 +1,27 @@
+```{r}
+
+ggplot(full_housing, aes(x = SaleType)) +
+  geom_bar() +
+  labs(title = "Counts of House by Sale Type",
+       x = "House Sale Type",
+       y = "Count")
+
+ggplot(full_housing, aes(x = SaleCondition)) +
+  geom_bar() +
+  labs(title = "Counts of House by Sale Condition",
+       x = "House Sale Condition",
+       y = "Count")
+```
+
+
+```{r}
+ggplot(data = , aes(x = displ, y = hwy)) +
+  geom_point() +
+  labs(title = "Scatterplot of Engine Displacement vs. Highway MPG",
+       x = "Engine Displacement (displ)",
+       y = "Highway MPG (hwy)")
+WD_house <- filter(new_full_house, SaleType=='WD')
+WD_house
+WD_house <- filter(new_full_house, SaleType=='WD')
+```
+
