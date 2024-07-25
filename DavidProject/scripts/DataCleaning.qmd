@@ -1,37 +1,36 @@
-You can add notes here
-
-Notes go outside of the grey box
-
 alt + ctrl + i to get an r code chunk
 
 ```{r}
 
+library(dplyr)
+library(janitor)
+library(ggplot2)
+library(tidyr)
 library(readr)
+
 test_data <- read_csv("data/house-prices-advanced-regression-techniques/test.csv")
 train_data <- read_csv("data/house-prices-advanced-regression-techniques/train.csv")
 train_data
 test_data
 
-housing_model <- lm(OverallCond ~ SaleType + SaleCondition + YrSold + YearBuilt + YearRemodAdd, data = train_data)
-pred <- predict(housing_model, newdata = test_data)
+full_housing <- full_join(train_data, test_data)
+full_housing
 
-ggplot(test_data, aes(x = OverallCond, y = pred)) +
-  geom_point() +
-  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "red") +
-  labs(title = "Real vs Predicted Values",
-       x = "True Overall Condition of House",
-       y = "Predicted Overall Condition of House")
-
-mse <- mean((test_data$OverallCond - pred)^2)
-r_squared <- summary(housing_model)$r.squared
-cat('Mean Squared Error:', mse, '\n')
-cat('R-squared:', r_squared, '\n')
 ```
-research question:
 
-DOES THE SALE TYPE OR CONDITION OF A HOUSE AFFECT THE QUALITY OF THE AMENITIES INSIDE OF IT?
-- maybe too broad, focus on specific part of something inside of the house
 
-Does the sale type of the house affect its overall quality?
+```{r}
+summary(train_data)
+str(full_housing)
+```
 
+
+```{r}
+# Exclude YearBuilt because YearRemodAdd shows latest qualities when sold
+# Exclude Conditions because that is caused by wear over time
+full_house <- full_housing |>
+select(YearRemodAdd, OverallQual, ExterQual,YrSold,SaleType, SaleCondition, Neighborhood,BldgType, HouseStyle,Foundation) |>
+arrange(YrSold) 
+full_house
+```
 
