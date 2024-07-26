@@ -1,0 +1,51 @@
+You can add notes here
+
+```{r}
+#install necessary packages
+# install.packages(dplyr)
+library(dplyr)
+```
+
+```{r}
+# reading in dataset
+data <- read.csv("data/train.csv")
+
+data
+
+```
+
+Notes
+
+```{r}
+#reduced dataset
+data_small <- select(data, YearBuilt, BedroomAbvGr, FullBath, OverallQual, OverallCond, BldgType, GarageQual, Neighborhood, MSZoning, LotArea, GrLivArea, SalePrice)
+#area dataset
+data_area <- select(data, LotArea, )
+```
+
+```{r}
+## average prices per variable
+# Neighborhood and sale price
+avg_neigh <- summarise(group_by(data_small, Neighborhood),
+          price = mean(SalePrice))
+avg_neigh
+
+# Zoning and sale price
+avg_zone <- summarise(group_by(data_small, MSZoning),
+                    price = mean(SalePrice))
+avg_zone
+# year and sale price
+avg_cond <- summarise(group_by(data_small, OverallCond),
+                      price = mean(SalePrice))
+```
+
+```{r}
+yr_num <- summarise(group_by(data, YearBuilt),
+          yr_count = n())
+data_combined <- arrange(full_join(data_small, yr_num), YearBuilt)
+```
+
+```{r}
+avg_price <- full_join(avg_neigh, avg_zone, by = "price")
+avg_price
+```
