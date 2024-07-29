@@ -49,3 +49,24 @@ data_combined <- arrange(full_join(data_small, yr_num), YearBuilt)
 avg_price <- full_join(avg_neigh, avg_zone, by = "price")
 avg_price
 ```
+
+```{r}
+summarise(group_by(data, BsmtQual),
+          count = n())
+```
+
+```{r}
+data_dif <-data |>
+  select(YearBuilt, YearRemodAdd) |>
+  mutate(difference = YearRemodAdd - YearBuilt)
+nrow(filter(data_dif, difference > 3))
+nrow(data_dif)
+```
+
+```{r}
+data_dif1 <- data |>
+  select(YearBuilt, GarageYrBlt) |>
+  mutate(garagedif = GarageYrBlt - YearBuilt)
+nrow(filter(data_dif1, garagedif > 0))
+nrow(filter(data, YearRemodAdd == YrSold))
+```

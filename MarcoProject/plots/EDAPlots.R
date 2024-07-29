@@ -59,14 +59,23 @@ ggplot(data = data_small, aes(x=factor(OverallQual), y = SalePrice)) +
 
 #line plot of year built vs sale price
 ggplot(data = data, aes(x = YearBuilt, y = SalePrice)) +
-  geom_line(stat = "summary", fun = "mean")
+  geom_line(stat = "summary", fun = "mean") +
+  scale_x_continuous(labels = label_comma()) +
+  labs(title = "Average Sale Price of Houses Built Over Time",
+       x = "Year Built",
+       y = "Average Sale Price")
 
 #double line plot of avg overall quality and condition vs year built
 ggplot(data = data, aes(YearBuilt)) +
   geom_line(aes(y = OverallCond, colour = "OverallCond"), 
             stat = "summary", fun = "mean") +
   geom_line(aes(y = OverallQual, colour = "OverallQual"),
-            stat = "summary", fun = "mean")
+            stat = "summary", fun = "mean") +
+  labs(title ="Average Quality and Condition of Houses by Year Built",
+       x = "Year Built",
+       y = "Rating") +
+  theme(plot.title = element_text(size=11)) +
+  scale_x_continuous(limits = c(1871, 2009))
 
 #line plot of livable area vs year built
 ggplot(data = data, aes(x = YearBuilt, y = GrLivArea)) +
@@ -76,8 +85,27 @@ ggplot(data = data, aes(x = YearBuilt, y = GrLivArea)) +
 ggplot(data, aes(x = YearBuilt, y = LotArea)) +
   geom_line(stat = "summary", fun = "mean")
 
-ggplot(data, aes(x = YearBuilt, y = GarageArea)) +
-  geom_line(stat = "summary", fun = "mean")
+#bar plot of distribution of garage types vs year built
+ggplot(data, aes(x = GarageYrBlt, fill = GarageType)) +
+  geom_bar(position = "fill") +
+  labs(title = "Area of Garages Built Over Time",
+       x = "Garage Construction Year",
+       y = "Garage Area (sq. ft)",
+       fill = "Garage Type")
+
+ggplot(data, aes(x = YearRemodAdd, fill = GarageType)) +
+  geom_bar(position = "fill") +
+  labs(title = "Area of Garages Built Over Time",
+       x = "Garage Construction Year",
+       y = "Garage Area (sq. ft)",
+       fill = "Garage Type")
+
+data$BsmtQual <- factor(data$BsmtQual, levels = c("Ex", "Gd", "TA", "Fa", "NA"))
+ggplot(filter(data, YearRemodAdd < YrSold), aes(x = YearRemodAdd, fill = BsmtQual)) +
+  geom_bar(position = "fill")
+
+ggplot(data, aes(x = YearBuilt, fill = BsmtQual)) +
+  geom_bar(position = "fill")
 
 
   
