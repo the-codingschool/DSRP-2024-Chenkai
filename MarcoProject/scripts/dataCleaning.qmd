@@ -10,7 +10,7 @@ library(dplyr)
 # reading in dataset
 data <- read.csv("data/train.csv")
 
-data
+head(data)
 
 ```
 
@@ -69,4 +69,13 @@ data_dif1 <- data |>
   mutate(garagedif = GarageYrBlt - YearBuilt)
 nrow(filter(data_dif1, garagedif > 0))
 nrow(filter(data, YearRemodAdd == YrSold))
+```
+
+```{r}
+tail(arrange(data, YearRemodAdd))
+```
+
+```{r}
+summarise(group_by(data, HouseStyle),
+          count = n())
 ```

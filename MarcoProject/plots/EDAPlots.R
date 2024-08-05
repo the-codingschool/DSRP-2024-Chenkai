@@ -109,7 +109,16 @@ ggplot(filter(data, YearRemodAdd < YrSold), aes(x = YearRemodAdd, fill = BsmtQua
   geom_bar(position = "fill")
 
 ggplot(data, aes(x = YearBuilt, fill = BsmtQual)) +
-  geom_bar(position = "fill")
+  geom_histogram(position = "fill", bins = 139)
+
+ggplot(data, aes(x = YearBuilt, fill = HouseStyle)) +
+  geom_histogram(position = "fill", bins = 139)
+
+ggplot(data, aes(x = YearBuilt, fill = KitchenQual)) +
+  geom_histogram(position = "fill", bins = 139)
+
+ggplot(data, aes(x = YearBuilt, fill = BsmtFinType1)) +
+  geom_histogram(position = "fill", bins = 139)
 
 
   
