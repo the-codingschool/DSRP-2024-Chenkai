@@ -16,6 +16,9 @@ ggplot(data = avg_neigh, aes(x = Neighborhood, y = price)) +
 ggplot(data = data_small, aes(x = GrLivArea, y = SalePrice)) +
   geom_point()
 
+ggplot(data = data_small, aes(x = YearBuilt, y = SalePrice)) +
+  geom_point()
+
 #scatter plot of lot area vs sale price
 ggplot(data = data_small, aes(x = LotArea, y = SalePrice)) +
   geom_point()
@@ -56,6 +59,7 @@ ggplot(data = data_small, aes(x=factor(OverallQual), y = SalePrice)) +
   labs(title = "Average Sale Price by Quality",
        x = "Quality",
        y = "Average Sale Price")
+
 
 #line plot of year built vs sale price
 ggplot(data = data, aes(x = YearBuilt, y = SalePrice)) +
