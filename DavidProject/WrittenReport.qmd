@@ -1,0 +1,33 @@
+---
+title: "Determinants of Housing Quality: Analyzing the Impact of Dwelling Type, Zoning Classification, and Lot Area on Overall Home Quality in Ames, Iowa"
+author: "David Zeng"
+format: html
+editor: visual
+---
+
+START WRITING written report here
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r setup}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
+
+message: false gets rid of any messages when loading a library during a render in a tab
+
+don't print out the entire dataframe/dataset unless it is less than 15 rows
