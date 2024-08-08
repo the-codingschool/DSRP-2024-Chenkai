@@ -1,33 +1,48 @@
-# Exploratory Data Analysis (Over Time)
+# Distribution of OverallQual
+ggplot(train_cleaned, aes(x = factor(OverallQual))) +
+  geom_bar(fill = "blue", alpha = 0.7) +
+  labs(title = "Distribution of Overall Quality", x = "Overall Quality", y = "Count") +
+  theme_minimal()
 
-# SalePrice over time by OverallQual
-ggplot(train_cleaned, aes(x = factor(YrSold), y = SalePrice, fill = factor(OverallQual))) +
-  geom_boxplot() +
-  scale_fill_brewer(palette = "Set3") +
-  labs(title = "Sale Price Over Time by Overall Quality", 
-       x = "Year Sold", y = "Sale Price", fill = "Overall Quality") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+# Histogram of DwellType
+ggplot(train_cleaned, aes(x = DwellType)) +
+  geom_bar(binwidth=5,fill = "blue", alpha = 0.7) +
+  labs(title = "Distribution of DwellType", x = "DwellType", y = "Count") +
+  theme_minimal()
 
-# SalePrice over time by OverallCond
-ggplot(train_cleaned, aes(x = factor(YrSold), y = SalePrice, fill = factor(OverallCond))) +
-  geom_boxplot() +
-  scale_fill_brewer(palette = "Set3") +
-  labs(title = "Sale Price Over Time by Overall Condition", 
-       x = "Year Sold", y = "Sale Price", fill = "Overall Condition") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+# Histogram of ZoneClass
+ggplot(train_cleaned, aes(x = ZoneClass)) +
+  geom_bar(fill = "blue", alpha = 0.7) +
+  labs(title = "Distribution of ZoneClass", x = "ZoneClass", y = "Count") +
+  theme_minimal()
 
-# SalePrice over time by ExterQual
-ggplot(train_cleaned, aes(x = factor(YrSold), y = SalePrice, fill = ExterQual)) +
-  geom_boxplot() +
-  scale_fill_brewer(palette = "Set3") +
-  labs(title = "Sale Price Over Time by Exterior Quality", 
-       x = "Year Sold", y = "Sale Price", fill = "Exterior Quality") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+# Distribution of LotArea
+ggplot(train_cleaned, aes(x = LotArea)) +
+  geom_histogram(binwidth = 500, fill = "blue", alpha = 0.7) +
+  labs(title = "Distribution of Lot Area", x = "Lot Area", y = "Count") +
+  theme_minimal()
 
-# SalePrice over time by ExterCond
-ggplot(train_cleaned, aes(x = factor(YrSold), y = SalePrice, fill = ExterCond)) +
-  geom_boxplot() +
-  scale_fill_brewer(palette = "Set3") +
-  labs(title = "Sale Price Over Time by Exterior Condition", 
-       x = "Year Sold", y = "Sale Price", fill = "Exterior Condition") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+# Filter LotArea for visualization of OverallQual and LotArea
+train_filtered <- train_cleaned |> filter(LotArea <= 20000)
+
+# Relationship between OverallQual and DwellType
+ggplot(train_cleaned, aes(x = factor(DwellType), fill = factor(OverallQual))) +
+  geom_bar(position = "fill", alpha = 0.7) +
+  scale_x_discrete(labels = dwell_type_labels) +
+  scale_fill_brewer(palette = "Set1") +
+  labs(title = "Overall Quality by DwellType", x = "DwellType", y = "Proportion", fill = "Overall Quality") +
+  theme_minimal()
+
+# Relationship between OverallQual and ZoneClass
+ggplot(train_cleaned, aes(x = ZoneClass, y = OverallQual, fill = ZoneClass)) +
+  geom_boxplot(alpha = 0.7) +
+  scale_fill_brewer(palette = "Set1") +
+  labs(title = "Overall Quality by ZoneClass", x = "ZoneClass", y = "Overall Quality") +
+  theme_minimal()
+
+# Relationship between OverallQual and LotArea (First iteration mosaic plot)
+ggplot(train_filtered, aes(x = LotArea, fill = factor(OverallQual))) +
+  geom_histogram(position = "fill", binwidth = 500, alpha = 0.7) +
+  scale_fill_brewer(palette = "Set1") +
+  labs(title = "Overall Quality by Lot Area", x = "Lot Area", y = "Proportion", fill = "Overall Quality") +
+  theme_minimal()
