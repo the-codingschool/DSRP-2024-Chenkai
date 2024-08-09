@@ -2,7 +2,7 @@ library(dplyr)
 library(ggplot2)
 
 # Load the dataset
-housing_data <- read.csv("C:/Users/nikun/Documents/DSRP-2024-Chenkai/house-prices-advanced-regression-techniques/train.csv")
+housing_data <- read.csv("C:/Users/nikun/Documents/DSRP-2024-Chenkai/NikunjProject/house-prices-advanced-regression-techniques/train.csv")
 
 # Convert categorical variables to factors with ordered levels
 housing_data$ExterQual <- factor(housing_data$ExterQual, levels = c("Po", "Fa", "TA", "Gd", "Ex"))
