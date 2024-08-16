@@ -5,8 +5,8 @@ library(ggplot2)
 library(tidyr)
 library(readr)
 
-train_housing <- read.csv("data/house-prices-advanced-regression-techniques/train.csv")
-test_housing <- read.csv("data/house-prices-advanced-regression-techniques/test.csv")
+train_housing <- read.csv("DavidProject/data/house-prices-advanced-regression-techniques/train.csv")
+test_housing <- read.csv("DavidProject/data/house-prices-advanced-regression-techniques/test.csv")
 
 colnames(train_housing)[colnames(train_housing) == "MSSubClass"] <- "DwellType"
 colnames(train_housing)[colnames(train_housing) == "MSZoning"] <- "ZoneClass"
