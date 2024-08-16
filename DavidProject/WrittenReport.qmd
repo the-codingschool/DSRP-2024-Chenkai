@@ -7,25 +7,94 @@ editor: visual
 
 ## Abstract
 
-The research question I planned to tackle was "What role do certain housing characteristics, specifically the type of dwelling, lot area, and zone classification, play in influencing the overall quality rating of a property?" The overall quality of homes significantly influences both market value and buyer satisfaction, making it a crucial factor in real estate analysis and housing market valuation. This analysis investigates the impact of three key variables—Dwelling Type, Zoning Classification, and Lot Area—on the overall quality of homes in Ames, Iowa. The hypothesis was that each of these factors would significantly affect overall home quality. Using a housing dataset from Kaggle with over 2,900 combined observations from Ames, Iowa, I selected the required variables to answer this question: MSSubClass, MSZoning, and LotArea, OverallQual, cleaned them into tidy format, and renamed them to make easier to understand: DwellType, ZoneClass, LotArea, and OverallQual. 3 separate ANOVA tests were performed to assess the significance of each variable's effect on overall home quality based on each category within their respective variables. The findings revealed that all three variables were statistically significant in affecting the overall quality of homes. More specific conclusions can be drawn from each individual variable's data analysis plot. These findings may prove useful for prospective home buyers, real estate professionals, and investors by providing insights that can lead to more informed decision-making in property valuation and investment. Understanding these factors allows for more accurate assessments of home quality, ultimately benefiting buyers, sellers, and investors alike.
+The research question I planned to tackle was "What role do certain housing characteristics, specifically the type of dwelling, lot area, and zone classification, play in influencing the overall quality rating of a property?" The overall quality of homes significantly influences both market value and buyer satisfaction, making it a crucial factor in real estate analysis and housing market valuation. This analysis investigates the impact of three key variables—Dwelling Type, Zoning Classification, and Lot Area—on the overall quality of homes in Ames, Iowa. The hypothesis was that each of these factors would significantly affect overall home quality. Using a housing dataset from Kaggle with over 2,900 combined observations from Ames, Iowa, I selected the required variables to answer this question: MSSubClass, MSZoning, LotArea, and OverallQual, cleaned them into tidy format, and renamed them for ease of understanding: DwellType, ZoneClass, LotArea, and OverallQual. 3 separate ANOVA tests were performed to assess the significance of each variable's effect on overall home quality based on each category within their respective variables. The findings revealed that all three variables were statistically significant in affecting the overall quality of homes. More specific conclusions can be drawn from each individual variable's data analysis plot. These findings may prove useful for prospective home buyers, real estate professionals, and investors by providing insights that can lead to more informed decision-making in property valuation and investment. Understanding these factors allows for more accurate assessments of home quality, ultimately benefiting buyers, sellers, and investors alike.
 
-## Running Code
+## Background
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+The quality rating of a house is a critical determinant of both market value and buyer satisfaction, making it a central focus for various stakeholders in the real estate market. In the United States, home quality directly influences a property's long-term value, which is reflected in the fact that nearly 90% of homebuyers consider property condition a crucial factor in their purchasing decisions (National Association of Realtors, 2023) meaning that it is essential to understand what drives housing quality ratings. This study focuses on three key variables: Dwelling Type, Zoning Classification, and Lot Area and explores how each of these factors influences the overall quality of homes in Ames, Iowa. The dataset, comprising over 2,900 individual properties, allows us to test the hypothesis that all three variables significantly affect home quality. This research aims to provide actionable insights for real estate professionals and investors, enhancing the accuracy of property valuations and investment strategies.
 
-```{r}
-1 + 1
-```
+## Results
 
-You can add options to executable code like this
+Figures 1-3 visualize the relationship between each of the explanatory variables (DwellType, ZoneClass, LotArea) and the overall quality rating (OverallQual) broken down by each of the categories within the explanatory variables. To confirm the relationships visualized in the plot between the explanatory variables and the overall quality, ANOVA tests were used as they were the most efficient method of testing for differences in correlation of the overall quality rating broken down by each level of these multi-categorical explanatory variables.
 
-```{r setup}
-#| echo: false
-2 * 2
-```
+Figure 1 reveals that each of the categories of dwelling type all have distinctly different divisions within the proportion of each rating they got. For example, most of the 1-story houses abbreviated using the letters A through E have a dominant proportion of mediocre ratings of 5-7, but for the 2-story houses F through H, there is a noticeable spike in the number of higher ratings 8-10.
 
-The `echo: false` option disables the printing of code (only output is displayed).
+![Figure 1 Key](images/Screenshot%202024-08-15%20215013.png){fig-align="center" width="282"}
 
-message: false gets rid of any messages when loading a library during a render in a tab
+**Figure 1**
 
-don't print out the entire dataframe/dataset unless it is less than 15 rows
+![](images/Screenshot 2024-08-16 163439.png){fig-align="center" width="448"}
+
+![](images/ANOVA DwellType.png){fig-align="center" width="495"}
+
+For this relationship, a p-value of less than 2\*10\^-16 means that as the type of dwelling of a house changes, so does the overall quality rating.
+
+Figure 2 compares overall quality to zone class. Similar to that of Figure 1, it contains a low consistency for the spread of ratings based on it explanatory variable. The ranges are especially different between residential high and low density areas, the number of outliers and where they are vary dramatically, and the quartiles and medians are mostly skewed one way or the other.
+
+![Figure 2 Key](images/Screenshot%202024-08-15%20221909.png){fig-align="center" width="233"}
+
+**Figure 2**
+
+![](images/Screenshot 2024-08-16 163508.png){fig-align="center" width="436"}
+
+![](images/ANOVA ZoneClass.png){fig-align="center" width="497"}
+
+For this ANOVA test, a p-value of less than 2\*10\^-16 again means that as the type of zone class for a house changes, the overall quality rating will change dramatically as well.
+
+Figure 3 compares overall quality to lot area. This variable has the most obvious trend out of all of the explanatory variables being tested. As lot area increases, the prevalence of mediocre ratings 5-7 dips around 6,000 square feet with an increase in lower ratings 3-4. After this, the prevalence of mediocre ratings begin rising again until about 17,000 square feet in which the higher ratings 8-10 begin to become more prominent. After this point, there is no discernible pattern and lot area becomes meaningless to the quality ratings it gets.
+
+**Figure 3**
+
+![](images/Screenshot 2024-08-16 163531.png){fig-align="center" width="461"}
+
+![](images/ANOVA LotArea.png){fig-align="center" width="471"}
+
+For this ANOVA test, a p-value of 6.38\*10-14 means that lot area does have a bearing on the overall quality ratings of a house until a certain square footage.
+
+## Discussion
+
+The results of these visualizations and these hypotheses tests do support my hypothesis that each of these explanatory variables (DwellType, ZoneClass, LotArea) significantly affect the overall quality rating (OverallQual) of a house in Ames, Iowa. Those who may benefit from a better determination of overall quality rating may do their jobs more accurately since these metrics prove fairly consistent and reliable.
+
+-   Homebuyers: Identification of which dwelling types or zoning classifications are associated with higher quality homes and focusing their search on these categories.
+
+-   Real Estate Agents: Better advising of clients on which types of properties or neighborhoods typically have higher quality homes.
+
+-   Investors: Target investments in areas or types of properties that are likely to yield higher returns due to better quality.
+
+-   Property Appraisals: Making more accurate appraisals by considering the dwelling type, zone class, and lot area as key factors influencing the overall quality.
+
+-   Mortgage Lending: More effective assessment of risk by understanding the quality factors associated with different property types and zones.
+
+This suggests that critical housing market functions, such as mortgage lending and home buying, could become significantly more efficient and less risky for all parties involved. As a result, these processes may be transformed from complex and convoluted to streamline and user-centric, ultimately benefiting all parties involved.
+
+Obviously, further research and testing is required before the public is able to utilize the results of these tests to aid in their daily lives as they are not yet specific and extensive enough to glean insights into the complex housing market. My next steps will be to tackle the limitations of my research and answer more specific sub-questions in order to hone the accuracy and repeatability of my results to be applicable for all housing in the US.
+
+Limitations:
+
+-   These specific results can only be applied to that of Ames, Iowa since it was where the housing dataset was taken from.
+
+-   There are many other types of dwellings and zone classes as well as houses with larger lot areas that are not included in the dataset, so the results would not provide much insight into those housing types.
+
+-   Further testing is required to determine the specifics of the conclusions. Ex: To which degree does the overall quality rating change as the lot area increases?
+
+-   There are other housing variables that affect the overall quality rating, so the changes observed in the rating are affected by confounding variables and are not entirely due to the 3 selected explanatory variables.
+
+## Code & Data Sources
+
+The housing dataset used in this research can be found [here](https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data "Kaggle House Prices - Advanced Regression Techniques").
+
+The GitHub repository with the code used in this research can be found [here](https://github.com/the-codingschool/DSRP-2024-Chenkai "The Coding School - Chenkai's Repository") (Inside the DavidProject folder).
+
+## References & Acknowledgements
+
+Homebuyer Purchasing Statistic:
+
+National Association of Realtors. (2023). *Home Buyer and Seller Generational Trends Report 2023*. nar.realtor/research-and-statistics/research-reports/home-buyer-and-seller-generational-trends
+
+I would like to acknowledge the following people for their contributions to this paper:
+
+-   Chenkai Hu for serving as mentor and aiding the development of my exploratory data analysis plots.
+
+-   Shruti for acting as TA and leading the team during check-ins for the entirety of the research project.
+
+-   The Coding School for this opportunity to apply my data science skills to a real world dataset and for spearheading the Data Science Research Program 2024.

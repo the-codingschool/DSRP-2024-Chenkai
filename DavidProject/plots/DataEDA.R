@@ -30,8 +30,8 @@ ggplot(train_cleaned, aes(x = factor(DwellType), fill = factor(OverallQual))) +
   geom_bar(position = "fill", alpha = 0.7) +
   scale_x_discrete(labels = dwell_type_labels) +
   scale_fill_brewer(palette = "Set1") +
-  labs(title = "Overall Quality by DwellType", x = "DwellType", y = "Proportion", fill = "Overall Quality") +
-  theme_minimal()
+  labs(title = "Overall Quality by DwellType", x = "DwellType", y = "Proportion", fill = "Overall Quality", caption = "Figure 1") +
+  theme_minimal() 
 
 # Relationship between OverallQual and ZoneClass
 ggplot(train_cleaned, aes(x = ZoneClass, y = OverallQual, fill = ZoneClass)) +
