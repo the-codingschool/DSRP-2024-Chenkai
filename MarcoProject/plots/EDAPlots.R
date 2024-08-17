@@ -117,7 +117,7 @@ ggplot(data, aes(x = YearBuilt, fill = HouseStyle)) +
 ggplot(data, aes(x = YearBuilt, fill = KitchenQual)) +
   geom_histogram(position = "fill", bins = 139)
 
-ggplot(data, aes(x = YearBuilt, fill = BsmtFinType1)) +
+ggplot(data, aes(x = YearBuilt, fill = RoofStyle)) +
   geom_histogram(position = "fill", bins = 139)
 
 

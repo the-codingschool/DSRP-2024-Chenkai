@@ -20,9 +20,10 @@ ggplot(data = knn_df2, aes(x = k_val, y = accuracy, group = 1)) +
 
 #multiple line plot
 ggplot(knn_joined, aes(x = k_val, group = 1)) +
-  geom_line(aes(y = BsmtQualAcc, colour = "BsmtQualAcc")) +
-  geom_line(aes(y = HouseStyleAcc, colour = "HouseStyleAcc")) +
-  geom_line(aes(y = KitchenQualAcc, colour = "KitchenQualAcc")) +
+  geom_line(aes(y = BQ, colour = "BQ")) +
+  geom_line(aes(y = HS, colour = "HS")) +
+  geom_line(aes(y = KQ, colour = "KQ")) +
+  geom_line(aes(y = RS, colour = "RS"))
   labs(title ="Average Accuracy by K Value",
        x = "K Value",
        y = "Accuracy") +
@@ -31,3 +32,5 @@ ggplot(knn_joined, aes(x = k_val, group = 1)) +
 #ttest results comparison (bar chart)
 ggplot(knn_new, aes(x=factor(Feature), y = Accuracy)) +
   geom_col(stats = "summary", fun = "mean")
+
+plot(tukey.test, las = 1)

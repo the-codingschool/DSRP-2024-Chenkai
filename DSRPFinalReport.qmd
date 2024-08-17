@@ -1,0 +1,72 @@
+---
+title: "Noticeable difference in fluctuation of house style values compared to other house features"
+author: "Marco Zhan"
+format: html
+editor: visual
+---
+
+# Abstract
+
+Using a dataset that comprised roughly 80 features of 1460 houses built between 1872 and 2010 in Ames, IA, I chose to answer the question, "How do the different features of a house over time correlate to the trend between the construction year and the sale price of a house?". Although the trend between the construction year and sale price of a house can be discovered quite easily, the overall value of other factors across time will have a more complex and hidden trend.
+
+I chose 3 factors to work with: house style, basement quality, and kitchen quality. Using a K Nearest Neighbor (KNN) classification model, I was able to determine how much each factor correlated with the trend between construction year and sale price. The average KNN accuracy for basement quality and kitchen quality was roughly the same, while the average accuracy for house style was much lower, indicating a lower correlation with the trend between construction year and sale price.
+
+The KNN results show that different features of the house can follow the same trend differently and thus their values fluctuate differently over time. It provides a way to predict the strength of a feature's correlation to the overall trend between construction year and sale price.
+
+# Background
+
+I started exploring the dataset from a practical standpoint, wondering how to measure the values of different features. Although a natural approach would have been to investigate how to predict the sale price of a home given its features, I thought it would be interesting to try and do the reverse. This eventually led to the formation of the research question, "How do the different features of a house over time correlate to the trend between the construction year and the sale price of a house?".
+
+The dataset itself is collected from homes sold in Ames, IA from 2006 to 2010, with construction years (YearBuilt in the dataset) ranging from 1872 to 2010. The details of 80 features were collected for each house, ranging from the condition, quality, and size of the overall house, garage, and basement, the type of house, the lot area, and more.
+
+# Results
+
+Figure 1 shows the trend across time for the average sale price of all houses in a given year. This graph becomes the baseline comparison for the trends of other features.
+
+### Figure 1
+
+![](images/saleprice.png)
+
+Figures 2, 3, and 4 show the distribution trends across time for the variables basement quality (BsmtQual), kitchen quality (KitchenQual), and house style (HouseStyle). The vertical axis only shows the percentage of houses with a particular feature in any given year, and not the total number of houses (each bar represents one year of houses). BsmtQual and KitchenQual are both rated on a 4 level scale: Fair (Fa), Typical/Average (TA), Good (Gd), Excellent (Ex). The possible house styles are 1 story (1Story), 1.5 stories with the second finished or unfinished (1.5Fin & 1.5Unf), 2 stories (2Story), 2.5 stories with the third finished or unifinished (2.5Fin & 2.5Unf), split foyer (SFoyer), and split level (SLvl).
+
+### Figure 2
+
+![](images/BsmtQualYear.png)
+
+### Figure 3
+
+![](images/kitchenqualyear-01.png)
+
+### Figure 4
+
+![](images/housestyleyear-01.png)
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
+
+```{r}
+#| message: false
+library(data.table)
+2 * 2
+```
+
+```{r setup}
+#| include: false
+library(readr)
+library(ggplot2)
+library(dplyr)
+```
+
+# 😭
