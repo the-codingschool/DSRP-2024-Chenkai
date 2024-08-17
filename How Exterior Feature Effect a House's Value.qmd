@@ -1,0 +1,207 @@
+---
+title: "Exterior Feature Effect the House's Value"
+author: "Nikunj Khandelwal"
+format: html
+editor: visual
+execute: 
+  echo: false
+---
+
+## Abstract
+
+```{r}
+#| echo: false
+#| message: false
+#| include: false
+library(dplyr)
+library(ggplot2)
+
+# Load the dataset
+housing_data <- read.csv("C:/Users/nikun/Documents/DSRP-2024-Chenkai/NikunjProject/house-prices-advanced-regression-techniques/train.csv")
+
+# Convert categorical variables to factors with ordered levels
+housing_data$ExterQual <- factor(housing_data$ExterQual, levels = c("Po", "Fa", "TA", "Gd", "Ex"))
+housing_data$ExterCond <- factor(housing_data$ExterCond, levels = c("Po", "Fa", "TA", "Gd", "Ex"))
+housing_data$LandSlope <- factor(housing_data$LandSlope, levels = c("Sev", "Mod", "Gtl"))
+
+
+# Calculate the median sale price for each neighborhood
+median_prices <- housing_data %>%
+  group_by(Neighborhood) %>%
+  summarise(MedianPrice = median(SalePrice, na.rm = TRUE))
+
+# Add a binary variable for above/below median price
+housing_data <- housing_data %>%
+  left_join(median_prices, by = "Neighborhood") %>%
+  mutate(AboveMedian = ifelse(SalePrice > MedianPrice, 1, 0))
+
+# Function to filter neighborhoods with only one type of a feature
+filter_single_type <- function(data, feature) {
+  counts <- data %>%
+    group_by(Neighborhood, !!sym(feature)) %>%
+    tally() %>%
+    group_by(Neighborhood) %>%
+    filter(n() > 1) %>%
+    ungroup() %>%
+    select(Neighborhood)
+  filtered_data <- data %>%
+    filter(Neighborhood %in% counts$Neighborhood)
+  return(filtered_data)
+}
+
+# Create filtered datasets for each feature
+filtered_data_ExterQual <- filter_single_type(housing_data, "ExterQual")
+filtered_data_ExterCond <- filter_single_type(housing_data, "ExterCond")
+filtered_data_RoofStyle <- filter_single_type(housing_data, "RoofStyle")
+filtered_data_PavedDrive <- filter_single_type(housing_data, "PavedDrive")
+filtered_data_Street <- filter_single_type(housing_data, "Street")
+filtered_data_LandSlope <- filter_single_type(housing_data, "LandSlope")
+filtered_data_Foundation <- filter_single_type(housing_data, "Foundation")
+
+
+# Logistic regression analysis function
+run_single_feature_logistic_regression <- function(data, feature) {
+  formula <- as.formula(paste("AboveMedian ~", feature))
+  model <- glm(formula, data = data, family = "binomial")
+  return(summary(model))
+}
+
+# Create plots for categorical features
+create_categorical_plot <- function(data, feature, title) {
+  ggplot(data, aes_string(x = feature, fill = "as.factor(AboveMedian)")) +
+    geom_bar(position = "fill") +
+    facet_wrap(~ Neighborhood) +
+    labs(title = title, x = feature, fill = "Above Median") +
+    scale_fill_manual(values = c("0" = "#d73027", "1" = "#1a9850"), labels = c("0" = "Below Median", "1" = "Above Median")) +
+    theme_minimal() +
+    theme(
+      plot.title = element_text(hjust = 0.5),
+      axis.text.x = element_text(angle = 45, hjust = 1)
+    ) +
+    scale_x_discrete(drop = FALSE)
+}
+
+# Run logistic regression for each feature separately
+summary_ExterQual <- run_single_feature_logistic_regression(filtered_data_ExterQual, "ExterQual")
+summary_ExterCond <- run_single_feature_logistic_regression(filtered_data_ExterCond, "ExterCond")
+summary_RoofStyle <- run_single_feature_logistic_regression(filtered_data_RoofStyle, "RoofStyle")
+summary_PavedDrive <- run_single_feature_logistic_regression(filtered_data_PavedDrive, "PavedDrive")
+summary_Street <- run_single_feature_logistic_regression(filtered_data_Street, "Street")
+summary_LandSlope <- run_single_feature_logistic_regression(filtered_data_LandSlope, "LandSlope")
+summary_Foundation <- run_single_feature_logistic_regression(filtered_data_Foundation, "Foundation")
+
+# Create plots for the new features
+plot_ExterQual <- create_categorical_plot(filtered_data_ExterQual, "ExterQual", "Effect of Exterior Quality on Probability of Selling Above Median Price by Neighborhood")
+plot_ExterCond <- create_categorical_plot(filtered_data_ExterCond, "ExterCond", "Effect of Exterior Condition on Probability of Selling Above Median Price by Neighborhood")
+plot_RoofStyle <- create_categorical_plot(filtered_data_RoofStyle, "RoofStyle", "Effect of Roof Style on Probability of Selling Above Median Price by Neighborhood")
+plot_PavedDrive <- create_categorical_plot(filtered_data_PavedDrive, "PavedDrive", "Effect of Paved Drive on Probability of Selling Above Median Price by Neighborhood")
+plot_Street <- create_categorical_plot(filtered_data_Street, "Street", "Effect of Street Type on Probability of Selling Above Median Price by Neighborhood")
+plot_LandSlope <- create_categorical_plot(filtered_data_LandSlope, "LandSlope", "Effect of Land Slope on Probability of Selling Above Median Price by Neighborhood")
+plot_Foundation <- create_categorical_plot(filtered_data_Foundation, "Foundation", "Effect of Foundation Type on Probability of Selling Above Median Price by Neighborhood")
+```
+
+#### Problem
+
+In the last 50 year house prices are increase by 16 time. Outgrowing inflation by almost 300% [(Chart)](https://infogram.com/home-prices-vs-inflation-1h7g6k0kwzw8o2o) . This fact is for certain and backed up by data. However no matter how much progression had happened there is still confusion for buyer. This varies from knowing the worth of the house, or if a feature is worth the extra money. For owners is wondering if adding this to my property make it's worth increase. This confusion is not fixed by agents, agency, and online website. It leads to further confusion due to communication with agents and bidding war due to websites. But the great problem with these "solutions" are that they don't actually answer the question for a buyer or owner. Along with this my family recently bought a condo , and it was a bumpy ride. So motivated a new experience, I set to answer the question to clear the one question - How do different exterior home features influence the probability of a home being sold above the median market value? My hypothesis was that exterior feature do influence the probability of selling above the median market value within a neighborhood.
+
+### Approach
+
+To test this hypothesis, the study analyzed seven exterior features from the data set to determine their impact on the probability of a house being sold above the median market value. The features examined include foundation type, roof style, exterior quality, exterior condition, land slope, street type, and pavement status. A new column was added to the data, indicating whether a house sold below (0) or above (1) its neighborhood's median price. Each feature was carefully analyzed to ensure that missing values (nulls) and neighborhoods with only one type of a feature where removed to not skew the results. The study used Ggplot to understand and visual trend within neighborhood for specific feature type. Using logistic regression, the study assessed how these categorical variables influence sale prices. This analysis provides insights into the specific exterior characteristics that enhance property value, offering clarity for both buyers and homeowners.
+
+### Results
+
+#### Foundation
+
+Specific foundations had some major P values. For example poured concrete had a p value of 0.01992 and z value of 2.328 and slab foundation had a p value of 0.00356 and z value of -2.915. Meaning that houses with poured concrete foundation have a greater chance of selling over the median price while houses with slab foundation have a higher probability to sell below median price. Other foundation type didn't have a significant p value. Some trends we can see in the visual shows that almost all neighborhood showed the same trend. Almost all neighborhood containing poured concrete paid above price and slab paid below price.
+
+```{r}
+#| echo: false
+
+print(plot_Foundation)
+print(summary_Foundation)
+```
+
+#### Roof
+
+No roof type had a impact on the probability of the house being sold above the median value of a neighborhood. However when talking look at the visual we see that house's in Crawfor with Gambrel roof type all sold above median while in NAmes and IDOTRR neighborhood none of the house with Gambrel did. This shows regional bias. In some place a neighborhood will like a specific type and is associate with more value while in some neighborhood that same type is associate with less value.
+
+```{r}
+#| echo: false
+
+print(plot_RoofStyle)
+print(summary_RoofStyle)
+```
+
+#### Exterior Quality 
+
+Exterior Quality significantly influence the probability of a house selling above the median price or not. We clearly see that with the p-value of 0.0461 for Fair exterior quality , the low p-values of good and EX. This meant that the better the exterior quality the higher chance that it will sell above the neighborhood's median price. Also looking at the visual we see that trend clearly in more neighborhood. One thing to not is that no neighborhood had poor exterior condition houses.
+
+```{r}
+#| echo: false
+
+print(plot_ExterQual)
+print(summary_ExterQual)
+```
+
+#### Exterior Condition
+
+Surprisingly Exterior Condition didn't place a huge role in influencing the probability of a house selling above the median price or not. In the visual we can see that clearly that has in neighborhood, StoneBR, Time, and Veenker we see that typical exterior condition houses had a higher change that good exterior condition house for selling above median price within their respective neighborhood.
+
+```{r}
+#| echo: false
+print(summary_ExterCond)
+print(plot_ExterCond)
+
+```
+
+#### Land Slope and Street Type 
+
+Land Slope didn't place a huge impact of the probability has seen with the high p values for all the 3 slope types. Street Type didn't have a huge role either has seen with the high P value. Also street type had only 3 neighborhood with more that one street type showing that many neighborhood have one street type so buyer have no choice within that neighborhood.
+
+```{r}
+#| echo: false
+
+print(plot_LandSlope)
+print(plot_Street)
+
+print(summary_LandSlope)
+print(summary_Street)
+
+
+
+```
+
+#### Paved Driveway 
+
+Paved driveway did have a huge impact on the probability on the house's likelihood of selling above or below the house's neighborhood median price. The low P-value of 0.00194 and z value for -3.100 for not paved driveways means that houses without a paved driveway are more likely to be sold below the median price. While paved driveway with the p value of 0.00178 and z value of 3.125 are way more likely to sell above the median price.
+
+```{r}
+#| echo: false
+
+print(summary_PavedDrive)
+print(plot_PavedDrive)
+```
+
+### Conclusion
+
+Overall through this study it can seen that some exterior features and specific exterior features like foundation type, Exterior Quality, and paved driveway of a house impacts it's changes of selling above and below median price within that neighborhood. However exterior features like slope, street type, roof and exterior condition didn't have a impact on the house's probability of selling above or below the median house value of that neighborhood. Another small detail we noticed in the visual is that for some neighborhood a specific feature type might be worth the extra cost to other neighborhood it's not worth it showing regional bias. H
+
+## Discussion
+
+Even though my hypothesis was not support by this. This was between my hypothesis and null hypothesis has some features have a effect while others don't. Through this study buyers and owners can understand what is worth focusing on the house and whether it's worth bidding more because the house has a stone foundation with paved driveway, and good exterior condition. This can be taken further has HOA can use it's data from it's neighborhood to find what are the local trends and bias. On a national scale the government can also help home buyer and owner by providing data on what feature type it's worth spending money on in the regional area.
+
+## Resources Used
+
+Data set-<https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques>
+
+<https://quarto.org/docs/computations/execution-options.html>
+
+## Acknowledgements
+
+Some key individuals helped me through this research:
+
+-   Sarah Parker for helping and explaining all the concepts
+
+-   Chenkai Wu for providing the dataset and guiding me by helping me form research question, and giving good feedback on the results
+
+-   Shruthi for helping me and answering my code based questions
