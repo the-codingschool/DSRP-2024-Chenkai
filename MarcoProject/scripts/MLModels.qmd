@@ -1,0 +1,210 @@
+### Load in dataset and packages
+
+```{r}
+# reading in dataset
+data <- read.csv("data/train.csv")
+
+# head(data)
+
+# load in necessary packages
+if (!require("ggplot2")) install.packages("ggplot2")
+if (!require("caTools")) install.packages("caTools")
+if (!require("readr")) install.packages("readr")
+if (!require("downloader")) install.packages("downloader")
+if (!require("FNN")) install.packages("FNN")
+if (!require("readxl")) install.packages("readxl")
+if (!require("readxl")) install.packages("dplyr")
+if (!require("readxl")) install.packages("tidyr")
+
+library(ggplot2)
+library(caTools)
+library(readr)
+library(downloader)
+library(FNN)
+library(readxl)
+library(dplyr)
+library(tidyr)
+```
+
+### KNN for BsmtQual based on YearBuilt and SalePrice
+
+```{r}
+set.seed(42)
+
+#select relevant columns
+knn_data <- data[, c("YearBuilt", "SalePrice", "BsmtQual")]
+
+#split data into train (80%) and test (20%)
+split <- sample.split(knn_data$BsmtQual, SplitRatio = 0.8)
+train_data <- subset(knn_data, split == T)
+test_data <- subset(knn_data, split == F)
+
+# Fit the KNN model using the training data
+knn_model <- knn(train = train_data[, c("YearBuilt", "SalePrice")],
+                 test = test_data[, c("YearBuilt", "SalePrice")],
+                 cl = train_data$BsmtQual, k = 1)
+
+pred <- knn_model
+
+confusion_matrix <- table(test_data$BsmtQual, pred)
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+
+# Print the evaluation metrics
+cat('Confusion Matrix:\n')
+print(confusion_matrix)
+cat('\nAccuracy:', accuracy, '\n')
+```
+
+```{r}
+#creating data frame for accuracy by k value
+knn_df <- data.frame(
+  k_val = c("1", "2", "3", "4", "5", "6", "7", "8", "9"),
+  BQ = c("0.6385965", "0.6280702", "0.6631579", "0.6842105", "0.6842105", "0.6947368", "0.7017544", "0.6982456", "0.6982456")
+)
+knn_df$BQ <- as.numeric(knn_df$BQ)
+```
+
+### KNN for HouseStyle based on YearBuilt and SalePrice
+
+```{r}
+set.seed(42)
+
+#select relevant columns
+knn_data <- data[, c("YearBuilt", "SalePrice", "HouseStyle")]
+
+#split data into train (80%) and test (20%)
+split <- sample.split(knn_data$HouseStyle, SplitRatio = 0.8)
+train_data <- subset(knn_data, split == T)
+test_data <- subset(knn_data, split == F)
+
+# Fit the KNN model using the training data
+knn_model <- knn(train = train_data[, c("YearBuilt", "SalePrice")],
+                 test = test_data[, c("YearBuilt", "SalePrice")],
+                 cl = train_data$HouseStyle, k = 9)
+
+pred <- knn_model
+
+confusion_matrix <- table(test_data$HouseStyle, pred)
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+
+# Print the evaluation metrics
+cat('Confusion Matrix:\n')
+print(confusion_matrix)
+cat('\nAccuracy:', accuracy, '\n')
+```
+
+```{r}
+#creating data frame for accuracy by k value
+knn_df2 <- data.frame(
+  k_val = c("1", "2", "3", "4", "5", "6", "7", "8", "9"),
+  HS = c("0.4212328", "0.4178082", "0.4486301", "0.4589041", "0.4623287", "0.4520547", "0.4657534", "0.4794520", "0.4965753")
+)
+knn_df2$HS <- as.numeric(knn_df2$HS)
+```
+
+### KNN for KitchenQual based on YearBuilt and SalePrice
+
+```{r}
+set.seed(42)
+
+#select relevant columns
+knn_data <- data[, c("YearBuilt", "SalePrice", "KitchenQual")]
+
+#split data into train (80%) and test (20%)
+split <- sample.split(knn_data$KitchenQual, SplitRatio = 0.8)
+train_data <- subset(knn_data, split == T)
+test_data <- subset(knn_data, split == F)
+
+# Fit the KNN model using the training data
+knn_model <- knn(train = train_data[, c("YearBuilt", "SalePrice")],
+                 test = test_data[, c("YearBuilt", "SalePrice")],
+                 cl = train_data$KitchenQual, k = 8)
+
+pred <- knn_model
+
+confusion_matrix <- table(test_data$KitchenQual, pred)
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+
+# Print the evaluation metrics
+cat('Confusion Matrix:\n')
+print(confusion_matrix)
+cat('\nAccuracy:', accuracy, '\n')
+```
+
+```{r}
+#creating data frame for accuracy by k value
+knn_df3 <- data.frame(
+  k_val = c("1", "2", "3", "4", "5", "6", "7", "8", "9"),
+  KQ = c("0.6712329", "0.630137", "0.6712329", "0.6712329", "0.6952055", "0.6917808", "0.6917808", "0.6986301", "0.6986301")
+)
+knn_df3$KQ <- as.numeric(knn_df3$KQ)
+```
+
+KNN for GarageQual
+
+```{r}
+set.seed(42)
+
+#select relevant columns
+knn_data <- data[, c("YearBuilt", "SalePrice", "RoofStyle")]
+
+#split data into train (80%) and test (20%)
+split <- sample.split(knn_data$RoofStyle, SplitRatio = 0.8)
+train_data <- subset(knn_data, split == T)
+test_data <- subset(knn_data, split == F)
+
+# Fit the KNN model using the training data
+knn_model <- knn(train = train_data[, c("YearBuilt", "SalePrice")],
+                 test = test_data[, c("YearBuilt", "SalePrice")],
+                 cl = train_data$RoofStyle, k = 9)
+
+pred <- knn_model
+
+confusion_matrix <- table(test_data$RoofStyle, pred)
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+
+# Print the evaluation metrics
+cat('Confusion Matrix:\n')
+print(confusion_matrix)
+cat('\nAccuracy:', accuracy, '\n')
+```
+
+```{r}
+#creating data frame for accuracy by k value
+knn_df4 <- data.frame(
+  k_val = c("1", "2", "3", "4", "5", "6", "7", "8", "9"),
+  RS = c("0.6735395", "0.7285223", "0.6975945", "0.7457045", "0.7457044", "0.7731959", "0.7766323", "0.7800687", "0.7663230")
+)
+knn_df4$RS <- as.numeric(knn_df4$RS)
+```
+
+```{r}
+knn_joined <- inner_join(knn_df, knn_df2, by = "k_val")
+knn_joined <- inner_join(knn_joined, knn_df3, by = "k_val")
+knn_joined <- inner_join(knn_joined, knn_df4, by = "k_val")
+```
+
+```{r}
+knn_new <- pivot_longer(knn_joined, cols = c("BQ", "HS", "KQ", "RS"), names_to = "Feature", values_to = "Accuracy")
+knn_new
+```
+
+```{r}
+t.test(knn_joined$BQ, knn_joined$HS)
+t.test(knn_joined$BQ, knn_joined$KQ)
+t.test(knn_joined$HS, knn_joined$KQ)
+```
+
+```{r}
+ttest <- c(6.338e-12, 0.7899, 1.253e-12)
+combination <- c("BQ & HS", "BQ & KQ", "HS & KQ")
+
+df_ttest <- data.frame(col1 = combination, col2 = ttest)
+```
+
+```{r}
+result <- aov(Accuracy ~ Feature, data = knn_new)
+summary(result)
+tukey.test <- TukeyHSD(result)
+tukey.test
+```

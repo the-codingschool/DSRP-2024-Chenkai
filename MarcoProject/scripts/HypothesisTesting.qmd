@@ -1,0 +1,14 @@
+```{r}
+up1960 <- select(filter(data, Exterior1st == "HdBoard"), SalePrice)
+down1960 <- select(filter(data, Exterior1st == "BrkFace"), SalePrice)
+t.test(up1960, down1960)
+```
+
+```{r}
+small_data = table(data$ExterQual, data$ExterCond)
+small_data
+```
+
+```{r}
+chisq.test(small_data)
+```
