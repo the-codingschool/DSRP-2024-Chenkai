@@ -21,40 +21,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -116,11 +82,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="results" class="level1">
 <h1>Results</h1>
-<p>Figure 1 shows the trend across time for the average sale price of all houses in a given year. This graph becomes the baseline comparison for the trends of other features.</p>
+<p>Figure 1 shows the trend across time for the average sale price of all houses in a given year. This graph becomes the baseline comparison for the trends of other features. The actual variables used in the dataset were YearBuilt and SalePrice.</p>
 <section id="figure-1" class="level3">
 <h3 class="anchored" data-anchor-id="figure-1">Figure 1</h3>
 <p><img src="images/saleprice.png" class="img-fluid"></p>
-<p>Figures 2, 3, and 4 show the distribution trends across time for the variables basement quality (BsmtQual), kitchen quality (KitchenQual), and house style (HouseStyle). The vertical axis only shows the percentage of houses with a particular feature in any given year, and not the total number of houses (each bar represents one year of houses). BsmtQual and KitchenQual are both rated on a 4 level scale: Fair (Fa), Typical/Average (TA), Good (Gd), Excellent (Ex). The possible house styles are 1 story (1Story), 1.5 stories with the second finished or unfinished (1.5Fin &amp; 1.5Unf), 2 stories (2Story), 2.5 stories with the third finished or unifinished (2.5Fin &amp; 2.5Unf), split foyer (SFoyer), and split level (SLvl).</p>
+<p>Figures 2, 3, and 4 show the distribution trends across time for the variables basement quality (BsmtQual), kitchen quality (KitchenQual), and house style (HouseStyle). The vertical axis only shows the percentage of houses with a particular feature in any given year, and not the total number of houses (each bar represents one year of houses). BsmtQual and KitchenQual are both rated on a 4 level scale: Fair (Fa), Typical/Average (TA), Good (Gd), Excellent (Ex). The possible house styles are 1 story (1Story), 1.5 stories with the second finished or unfinished (1.5Fin &amp; 1.5Unf), 2 stories (2Story), 2.5 stories with the third finished or unfinished (2.5Fin &amp; 2.5Unf), split foyer (SFoyer), and split level (SLvl).</p>
 </section>
 <section id="figure-2" class="level3">
 <h3 class="anchored" data-anchor-id="figure-2">Figure 2</h3>
@@ -133,31 +99,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="figure-4" class="level3">
 <h3 class="anchored" data-anchor-id="figure-4">Figure 4</h3>
 <p><img src="images/housestyleyear-01.png" class="img-fluid"></p>
-<p>When you click the <strong>Render</strong> button a document will be generated that includes both content and the output of embedded code. You can embed code like this:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
-</div>
-</div>
-<p>You can add options to executable code like this</p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 4</code></pre>
-</div>
-</div>
-<p>The <code>echo: false</code> option disables the printing of code (only output is displayed).</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 4</code></pre>
-</div>
-</div>
+<p>The goal of the project was to determine how much each of the 3 variables above follow the trend between YearBuilt and SalePrice. To do this, I utilized a KNN search based on the YearBuilt and SalePrice variables, of which a scatter plot is shown in Figure 5.</p>
+</section>
+<section id="figure-5" class="level3">
+<h3 class="anchored" data-anchor-id="figure-5">Figure 5</h3>
+<p><img src="images/saleyearscatter.png" class="img-fluid"></p>
+<p>The dataset was randomly split into a training subset (80% of the total dataset) and a test subset (20% of the total dataset). The K value for each search was varied from 1 to 9. For each variable and K value, the accuracy was defined as (# of correct predictions) / (# of total predictions). The following results are shown in Figure 6.</p>
+</section>
+<section id="figure-6" class="level3">
+<h3 class="anchored" data-anchor-id="figure-6">Figure 6</h3>
+<p><img src="images/accuracyplot.png" class="img-fluid"></p>
+<p>Although BsmtQual and KitchenQual had roughly equal accuracies across all K values, HouseStyle had a noticeably lower accuracy. This indicates that HouseStyle follows the YearBuilt/SalePrice trend to a lesser degree than BsmtQual and KitchenQual.</p>
 </section>
 </section>
-<section id="section" class="level1">
-<h1>😭</h1>
+<section id="discussion" class="level1">
+<h1>Discussion</h1>
+<p>There were several restrictions throughout the project that obstructed me from obtaining ideal results. The dataset was limited to only Ames, IA, which may not be representative of cities throughout the country. Also, certain categorical values in the dataset were rather vague (such as the scale used for KitchenQual), and there was no strict rule used to determine what value should be assigned to each house, which could have led to inaccurate results. Also, the KNN may not have been the best classification model to use, as I was limited to the content taught within the DSRP.</p>
+<p>The following conclusion can be drawn: Different features may follow the same trend to different degrees, and it is important to find out roughly how the value of each variable changes over time. Furthermore, K Nearest Neighbor (KNN) models provide a way to explore how closely a categorical variable follows a trend of two given variables. These conclusions allow prospective house buyers to see which features of a house may be most important for a long term investment.</p>
+<p>Future research would ideally contain exploration into more variables of the house (other than just the 3 within this project). It would also include research on a broader scope, such as datasets for large cities and rural areas.</p>
+</section>
+<section id="data-and-code-sources" class="level1">
+<h1>Data and Code Sources</h1>
+<p>The original dataset can be found here: <a href="https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques" class="uri">https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques</a></p>
+<p>The code for this project can be found here (under the MarcoProject: <a href="https://github.com/the-codingschool/DSRP-2024-Chenkai" class="uri">https://github.com/the-codingschool/DSRP-2024-Chenkai</a></p>
+</section>
+<section id="acknowledgements" class="level1">
+<h1>Acknowledgements</h1>
+<p>I would like to acknowledge Sarah Parker for teaching me the required content to complete this project. I would also like to acknowledge Chenkai Hsu and Shruti for guidance on the specific details of the project.</p>
 </section>
 
 </main>
