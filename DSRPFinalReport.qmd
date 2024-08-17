@@ -21,13 +21,13 @@ The dataset itself is collected from homes sold in Ames, IA from 2006 to 2010, w
 
 # Results
 
-Figure 1 shows the trend across time for the average sale price of all houses in a given year. This graph becomes the baseline comparison for the trends of other features.
+Figure 1 shows the trend across time for the average sale price of all houses in a given year. This graph becomes the baseline comparison for the trends of other features. The actual variables used in the dataset were YearBuilt and SalePrice.
 
 ### Figure 1
 
 ![](images/saleprice.png)
 
-Figures 2, 3, and 4 show the distribution trends across time for the variables basement quality (BsmtQual), kitchen quality (KitchenQual), and house style (HouseStyle). The vertical axis only shows the percentage of houses with a particular feature in any given year, and not the total number of houses (each bar represents one year of houses). BsmtQual and KitchenQual are both rated on a 4 level scale: Fair (Fa), Typical/Average (TA), Good (Gd), Excellent (Ex). The possible house styles are 1 story (1Story), 1.5 stories with the second finished or unfinished (1.5Fin & 1.5Unf), 2 stories (2Story), 2.5 stories with the third finished or unifinished (2.5Fin & 2.5Unf), split foyer (SFoyer), and split level (SLvl).
+Figures 2, 3, and 4 show the distribution trends across time for the variables basement quality (BsmtQual), kitchen quality (KitchenQual), and house style (HouseStyle). The vertical axis only shows the percentage of houses with a particular feature in any given year, and not the total number of houses (each bar represents one year of houses). BsmtQual and KitchenQual are both rated on a 4 level scale: Fair (Fa), Typical/Average (TA), Good (Gd), Excellent (Ex). The possible house styles are 1 story (1Story), 1.5 stories with the second finished or unfinished (1.5Fin & 1.5Unf), 2 stories (2Story), 2.5 stories with the third finished or unfinished (2.5Fin & 2.5Unf), split foyer (SFoyer), and split level (SLvl).
 
 ### Figure 2
 
@@ -41,32 +41,34 @@ Figures 2, 3, and 4 show the distribution trends across time for the variables b
 
 ![](images/housestyleyear-01.png)
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+The goal of the project was to determine how much each of the 3 variables above follow the trend between YearBuilt and SalePrice. To do this, I utilized a KNN search based on the YearBuilt and SalePrice variables, of which a scatter plot is shown in Figure 5.
 
-```{r}
-1 + 1
-```
+### Figure 5
 
-You can add options to executable code like this
+![](images/saleyearscatter.png)
 
-```{r}
-#| echo: false
-2 * 2
-```
+The dataset was randomly split into a training subset (80% of the total dataset) and a test subset (20% of the total dataset). The K value for each search was varied from 1 to 9. For each variable and K value, the accuracy was defined as (# of correct predictions) / (# of total predictions). The following results are shown in Figure 6.
 
-The `echo: false` option disables the printing of code (only output is displayed).
+### Figure 6
 
-```{r}
-#| message: false
-library(data.table)
-2 * 2
-```
+![](images/accuracyplot.png)
 
-```{r setup}
-#| include: false
-library(readr)
-library(ggplot2)
-library(dplyr)
-```
+Although BsmtQual and KitchenQual had roughly equal accuracies across all K values, HouseStyle had a noticeably lower accuracy. This indicates that HouseStyle follows the YearBuilt/SalePrice trend to a lesser degree than BsmtQual and KitchenQual.
 
-# 😭
+# Discussion
+
+There were several restrictions throughout the project that obstructed me from obtaining ideal results. The dataset was limited to only Ames, IA, which may not be representative of cities throughout the country. Also, certain categorical values in the dataset were rather vague (such as the scale used for KitchenQual), and there was no strict rule used to determine what value should be assigned to each house, which could have led to inaccurate results. Also, the KNN may not have been the best classification model to use, as I was limited to the content taught within the DSRP.
+
+The following conclusion can be drawn: Different features may follow the same trend to different degrees, and it is important to find out roughly how the value of each variable changes over time. Furthermore, K Nearest Neighbor (KNN) models provide a way to explore how closely a categorical variable follows a trend of two given variables. These conclusions allow prospective house buyers to see which features of a house may be most important for a long term investment.
+
+Future research would ideally contain exploration into more variables of the house (other than just the 3 within this project). It would also include research on a broader scope, such as datasets for large cities and rural areas.
+
+# Data and Code Sources
+
+The original dataset can be found here: <https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques>
+
+The code for this project can be found here (under the MarcoProject: <https://github.com/the-codingschool/DSRP-2024-Chenkai>
+
+# Acknowledgements
+
+I would like to acknowledge Sarah Parker for teaching me the required content to complete this project. I would also like to acknowledge Chenkai Hsu and Shruti for guidance on the specific details of the project.
